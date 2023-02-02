@@ -103,7 +103,7 @@ class _homeState extends State<searchhome> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MovieDetails()),
+          MaterialPageRoute(builder: (context) => MovieDetails(items)),
         );
       },
 

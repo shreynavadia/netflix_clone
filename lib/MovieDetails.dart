@@ -4,10 +4,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:imdb_clone/Globals.dart';
 import 'package:imdb_clone/Navigation.dart';
+import 'package:imdb_clone/Searchmodule/Model.dart';
 import 'package:imdb_clone/Searchmodule/searchhome.dart';
 
 class MovieDetails extends StatefulWidget {
-  MovieDetails();
+  D item;
+  MovieDetails(this.item);
 
   @override
   State<MovieDetails> createState() => _homeState();
@@ -22,8 +24,8 @@ class _homeState extends State<MovieDetails> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SizedBox(height: 40),
-          overlappedhero(),
-          titleinfo(),
+          overlappedhero(widget.item),
+          titleinfo(widget.item),
           PlayButton(),
           DownloadButton(),
           Divider(color: Colors.white),
@@ -37,10 +39,14 @@ class _homeState extends State<MovieDetails> {
   Widget PlotOutline () {
     return h5whitetext("Stranger Things is set in the fictional rural town of Hawkins, Indiana, during the 1980s. The nearby Hawkins National Laboratory ostensibly performs scientific research for the United States Department of Energy, but secretly does experiments into the paranormal and supernatural, including those that involve human test subjects. Inadvertently, they have created a portal to an alternate dimension, the Upside Down. The influence of the Upside Down starts to affect the unknowing residents of Hawkins in calamitous ways");
   }
-  Widget overlappedhero() {
+  Widget overlappedhero(D item) {
     return Stack(children: [
-      Container(
-        child: Image.network("https://wallpaperaccess.com/full/712422.jpg"),
+      Align(
+        alignment: Alignment.center,
+        child: Container(
+          height: 250,
+          child: Image.network(item.i.imageUrl),
+        ),
       ),
       Positioned(
           right: 12,
@@ -61,7 +67,7 @@ class _homeState extends State<MovieDetails> {
               ))),
     ]);
   }
-  Widget titleinfo() {
+  Widget titleinfo(D item) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
       child: Column(
@@ -72,7 +78,7 @@ class _homeState extends State<MovieDetails> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                h3whitetext("Title here"),
+                h3whitetext(item.l),
               ],
             ),
           ),
@@ -83,7 +89,7 @@ class _homeState extends State<MovieDetails> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 h5whitetext("Genre"),
-                h5whitetext("Year of Release"),
+                h5whitetext(item.y.toString()),
               ],
             ),
           ),
@@ -143,4 +149,5 @@ class _homeState extends State<MovieDetails> {
       ),
     );
   }
+  
 }
