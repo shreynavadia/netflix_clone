@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:imdb_clone/HomeScreen.dart';
+import 'package:imdb_clone/Models/TitleDataModel.dart';
 import 'package:imdb_clone/MovieDetails.dart';
 import 'package:imdb_clone/Navigation.dart';
 import 'package:imdb_clone/Searchmodule/Model.dart';
@@ -17,10 +17,12 @@ class _homeState extends State<searchhome> {
 
   TextEditingController querycontroller = TextEditingController();
   List<D> d;
+
   @override
   void initState() {
     super.initState();
     getAPI("Silicon Valley");
+
   }
 
   @override
@@ -81,11 +83,9 @@ class _homeState extends State<searchhome> {
       ),
     );
   }
-
   Widget buildListview() {
     return _jobsListView(d);
   }
-
   Widget _jobsListView(List<D> items) {
     return Expanded(
       child: ListView.builder(
@@ -97,7 +97,6 @@ class _homeState extends State<searchhome> {
           }),
     );
   }
-
   Widget cardbuildup(BuildContext context, D items) {
     return InkWell(
       onTap: () {
@@ -106,13 +105,6 @@ class _homeState extends State<searchhome> {
           MaterialPageRoute(builder: (context) => MovieDetails(items)),
         );
       },
-
-        // {
-        // Navigator.push(
-        // context,
-        // MaterialPageRoute(builder: (context) => MovieDetails(items)),
-        // );
-        // },
 
       child: Padding(
         padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
@@ -150,7 +142,6 @@ class _homeState extends State<searchhome> {
       ),
     );
   }
-
   Widget getImage(D items) {
     if (items.i != null && items.i.imageUrl != null) {
       return Container(
@@ -166,7 +157,6 @@ class _homeState extends State<searchhome> {
           child: Image.network("https://images.ctfassets.net/4cd45et68cgf/Rx83JoRDMkYNlMC9MKzcB/2b14d5a59fc3937afd3f03191e19502d/Netflix-Symbol.png?w=684&h=456"));
     }
   }
-
   void getAPI(String query) async {
     Map<String, String> _headers = {
       "x-rapidapi-key": "36b9e0e89fmshf4c0957c5b907e9p148c75jsn01113177a1e5",

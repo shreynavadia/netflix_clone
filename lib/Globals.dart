@@ -28,7 +28,7 @@ Widget h5whitetext(whitetext) {
     textAlign: TextAlign.justify,
     style: GoogleFonts.robotoFlex(
         color: Color(0xffECF9FF),
-        fontSize: 13,
+        fontSize: 14.5,
         letterSpacing: 0.9,
     )
   );
@@ -61,5 +61,19 @@ Widget h4buttontext(blacktext) {
         fontSize: 18,
         letterSpacing: 1,
         fontWeight: FontWeight.w600),
+  );
+}
+Widget h4thinwhitetext(whitetext) {
+  return Padding(
+    padding: const EdgeInsets.all(10.0),
+    child: Text(
+      whitetext,
+      textAlign: TextAlign.justify,
+      style: GoogleFonts.robotoFlex(
+          color: Colors.white,
+          fontSize: 15,
+          letterSpacing: 0.9,
+          fontWeight: FontWeight.w300),
+    ),
   );
 }

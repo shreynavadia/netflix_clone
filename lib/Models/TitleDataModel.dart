@@ -63,7 +63,7 @@ class TitleData {
 class Title {
   String type;
   String id;
-  Image image;
+  // String image;
   int runningTimeInMinutes;
   String nextEpisode;
   int numberOfEpisodes;
@@ -76,7 +76,7 @@ class Title {
   Title(
       {this.type,
         this.id,
-        this.image,
+        // this.image,
         this.runningTimeInMinutes,
         this.nextEpisode,
         this.numberOfEpisodes,
@@ -89,7 +89,7 @@ class Title {
   Title.fromJson(Map<String, dynamic> json) {
     type = json['@type'];
     id = json['id'];
-    image = json['image'] != null ? new Image.fromJson(json['image']) : null;
+    // image = json['image'] != null ? new Image.fromJson(json['image']) : null;
     runningTimeInMinutes = json['runningTimeInMinutes'];
     nextEpisode = json['nextEpisode'];
     numberOfEpisodes = json['numberOfEpisodes'];
@@ -104,9 +104,9 @@ class Title {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['@type'] = this.type;
     data['id'] = this.id;
-    if (this.image != null) {
-      data['image'] = this.image.toJson();
-    }
+    // if (this.image != null) {
+    //   data['image'] = this.image.toJson();
+    // }
     data['runningTimeInMinutes'] = this.runningTimeInMinutes;
     data['nextEpisode'] = this.nextEpisode;
     data['numberOfEpisodes'] = this.numberOfEpisodes;
@@ -120,30 +120,30 @@ class Title {
 }
 
 
-class Image {
-  int height;
-  String id;
-  String url;
-  int width;
-
-  Image({this.height, this.id, this.url, this.width});
-
-  Image.fromJson(Map<String, dynamic> json) {
-    height = json['height'];
-    id = json['id'];
-    url = json['url'];
-    width = json['width'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['height'] = this.height;
-    data['id'] = this.id;
-    data['url'] = this.url;
-    data['width'] = this.width;
-    return data;
-  }
-}
+// class Image {
+//   int height;
+//   String id;
+//   String url;
+//   int width;
+//
+//   Image({this.height, this.id, this.url, this.width});
+//
+//   Image.fromJson(Map<String, dynamic> json) {
+//     height = json['height'];
+//     id = json['id'];
+//     url = json['url'];
+//     width = json['width'];
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['height'] = this.height;
+//     data['id'] = this.id;
+//     data['url'] = this.url;
+//     data['width'] = this.width;
+//     return data;
+//   }
+// }
 
 class Certificates {
   List<US> uS;
@@ -169,21 +169,21 @@ class Certificates {
 }
 
 class US {
-  List<String> attributes;
+  // List<String> attributes;
   String certificate;
   String country;
 
-  US({this.attributes, this.certificate, this.country});
+  US({ this.certificate, this.country});
 
   US.fromJson(Map<String, dynamic> json) {
-    attributes = json['attributes'].cast<String>();
+    // attributes = json['attributes'].cast<String>();
     certificate = json['certificate'];
     country = json['country'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['attributes'] = this.attributes;
+    // data['attributes'] = this.attributes;
     data['certificate'] = this.certificate;
     data['country'] = this.country;
     return data;

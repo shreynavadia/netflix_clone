@@ -3,19 +3,32 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:imdb_clone/Globals.dart';
+import 'package:imdb_clone/Models/TitleDataModel.dart';
 import 'package:imdb_clone/Navigation.dart';
 import 'package:imdb_clone/Searchmodule/Model.dart';
+import 'package:imdb_clone/Searchmodule/binding.dart';
 import 'package:imdb_clone/Searchmodule/searchhome.dart';
 
 class MovieDetails extends StatefulWidget {
   D item;
+
   MovieDetails(this.item);
+
+  TitleData titem;
 
   @override
   State<MovieDetails> createState() => _homeState();
 }
 
 class _homeState extends State<MovieDetails> {
+  TitleData titem;
+
+  @override
+  void initState() {
+    super.initState();
+    APIfetch(widget.item);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,15 +42,19 @@ class _homeState extends State<MovieDetails> {
           PlayButton(),
           DownloadButton(),
           Divider(color: Colors.white),
-          PlotOutline(),
+          PlotOutline(widget.item),
         ],
       ),
     );
   }
 
-
-  Widget PlotOutline () {
-    return h5whitetext("Stranger Things is set in the fictional rural town of Hawkins, Indiana, during the 1980s. The nearby Hawkins National Laboratory ostensibly performs scientific research for the United States Department of Energy, but secretly does experiments into the paranormal and supernatural, including those that involve human test subjects. Inadvertently, they have created a portal to an alternate dimension, the Upside Down. The influence of the Upside Down starts to affect the unknowing residents of Hawkins in calamitous ways");
+  Widget PlotOutline(D item) {
+    if (titem.plotSummary != null) {
+      return  h4thinwhitetext(titem.plotSummary.text);
+    }
+    else {
+      return h4thinwhitetext(titem.plotOutline.text);
+    }
   }
   Widget overlappedhero(D item) {
     return Stack(children: [
@@ -45,7 +62,7 @@ class _homeState extends State<MovieDetails> {
         alignment: Alignment.center,
         child: Container(
           height: 250,
-          child: Image.network(item.i.imageUrl),
+          child: getImage(item),
         ),
       ),
       Positioned(
@@ -88,7 +105,7 @@ class _homeState extends State<MovieDetails> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                h5whitetext("Genre"),
+                h5whitetext(titem.genres[0]),
                 h5whitetext(item.y.toString()),
               ],
             ),
@@ -99,8 +116,9 @@ class _homeState extends State<MovieDetails> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                h5whitetext("Rating"),
-                h5whitetext("Certificate"),
+               convertor(item),
+                h5whitetext("Rating| " + titem.ratings.rating.toString()),
+
               ],
             ),
           ),
@@ -108,6 +126,17 @@ class _homeState extends State<MovieDetails> {
         ],
       ),
     );
+  }
+  Widget convertor (D item) {
+    if (titem.title.titleType == "movie") {
+      int runtimeinhours = titem.title.runningTimeInMinutes ~/ 60 ;
+      return h5whitetext(runtimeinhours.toString()+ " hrs ");
+    }
+    else  {
+      return h5whitetext("Netflix Rank: " + titem.ratings.otherRanks[0].rank.toString());
+    }
+
+
   }
   Widget PlayButton() {
     return Padding(
@@ -149,5 +178,35 @@ class _homeState extends State<MovieDetails> {
       ),
     );
   }
-  
+  Widget getImage(D item) {
+    if (item.i != null && item.i.imageUrl != null) {
+      return Container(
+          color: Colors.white, child: Image.network(item.i.imageUrl));
+    } else {
+      return Container(
+          color: Colors.white,
+          child: Image.network(
+              "https://images.ctfassets.net/4cd45et68cgf/Rx83JoRDMkYNlMC9MKzcB/2b14d5a59fc3937afd3f03191e19502d/Netflix-Symbol.png?w=684&h=456"));
+    }
+  }
+  void APIfetch(D item) async {
+    Map<String, String> _headers = {
+      "x-rapidapi-key": "36b9e0e89fmshf4c0957c5b907e9p148c75jsn01113177a1e5",
+      "x-rapidapi-host": "imdb8.p.rapidapi.com",
+    };
+    Uri uri = Uri.https(APIpathservice.authority, APIpathservice.path,
+        {"tconst": item.id, "currentCountry": 'US'});
+    final response = await http.get(uri, headers: _headers);
+    if (response.statusCode == 200) {
+      print(response.body.toString());
+      final jsonMap = json.decode(response.body);
+      var model = TitleData.fromJson(jsonMap);
+      setState(() {
+        titem = model;
+      });
+    } else {
+      throw Exception(
+          'API call returned: ${response.statusCode} ${response.reasonPhrase}');
+    }
+  }
 }
