@@ -105,7 +105,7 @@ class _homeState extends State<MovieDetails> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                h5whitetext(titem.genres[0]),
+                getGenre(item),
                 h5whitetext(item.y.toString()),
               ],
             ),
@@ -118,7 +118,6 @@ class _homeState extends State<MovieDetails> {
               children: [
                convertor(item),
                 h5whitetext("Rating| " + titem.ratings.rating.toString()),
-
               ],
             ),
           ),
@@ -127,15 +126,26 @@ class _homeState extends State<MovieDetails> {
       ),
     );
   }
+  Widget getGenre (D item) {
+    if (titem.genres[0]!= null) {
+      return h5whitetext(titem.genres[0]);
+    }
+    else {
+      return h5whitetext("NA");
+    }
+  }
+
   Widget convertor (D item) {
     if (titem.title.titleType == "movie") {
       int runtimeinhours = titem.title.runningTimeInMinutes ~/ 60 ;
       return h5whitetext(runtimeinhours.toString()+ " hrs ");
     }
-    else  {
+    else if (titem.ratings.otherRanks != null) {
       return h5whitetext("Netflix Rank: " + titem.ratings.otherRanks[0].rank.toString());
     }
-
+    else {
+      return h5whitetext("NA");
+    }
 
   }
   Widget PlayButton() {
@@ -189,15 +199,16 @@ class _homeState extends State<MovieDetails> {
               "https://images.ctfassets.net/4cd45et68cgf/Rx83JoRDMkYNlMC9MKzcB/2b14d5a59fc3937afd3f03191e19502d/Netflix-Symbol.png?w=684&h=456"));
     }
   }
+
   void APIfetch(D item) async {
     Map<String, String> _headers = {
-      "x-rapidapi-key": "36b9e0e89fmshf4c0957c5b907e9p148c75jsn01113177a1e5",
+      "x-rapidapi-key": "493f3fff12msh8787aa6a78c882ap10d955jsn6aed97183a15",
       "x-rapidapi-host": "imdb8.p.rapidapi.com",
     };
     Uri uri = Uri.https(APIpathservice.authority, APIpathservice.path,
         {"tconst": item.id, "currentCountry": 'US'});
     final response = await http.get(uri, headers: _headers);
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 ) {
       print(response.body.toString());
       final jsonMap = json.decode(response.body);
       var model = TitleData.fromJson(jsonMap);

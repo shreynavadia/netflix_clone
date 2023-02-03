@@ -159,7 +159,7 @@ class _homeState extends State<searchhome> {
   }
   void getAPI(String query) async {
     Map<String, String> _headers = {
-      "x-rapidapi-key": "36b9e0e89fmshf4c0957c5b907e9p148c75jsn01113177a1e5",
+      "x-rapidapi-key": "493f3fff12msh8787aa6a78c882ap10d955jsn6aed97183a15",
       "x-rapidapi-host": "imdb8.p.rapidapi.com",
     };
     Uri uri = Uri.https(APIService.authority, APIService.path, {"q": query});
